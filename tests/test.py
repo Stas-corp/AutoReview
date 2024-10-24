@@ -29,7 +29,7 @@ async def test_main():
     url = "http://127.0.0.1:8000/review"
     payload = {
         "description": "This is a coding assignment",
-        "repo_url": "https://github.com/Stas-corp/tlb_project",
+        "repo_url": "https://github.com/Stas-corp/Test_USD",
         "level": "Junior"
     }
 
@@ -38,6 +38,6 @@ async def test_main():
         print(response.json())
 
 if __name__ == '__main__':
-    test_analyze()
+    # test_analyze()
     # asyncio.run(test_GitHubManager())
-    # asyncio.run(test_main())
+    asyncio.run(test_main())

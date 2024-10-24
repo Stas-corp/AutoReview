@@ -21,8 +21,8 @@ class ReviewRequest(BaseModel):
     repo_url: HttpUrl
     level: str
 
-@app.post("/review")
-async def review_code(request: ReviewRequest):
+@app.get("/")
+async def review_code(request = ReviewRequest(description="This is a coding assignment", repo_url="https://github.com/Stas-corp/Test_USD", level ="Junior")):
     try:
         logging.info("Review process started")
         repo_data = await GithubManager.main(request.repo_url)
@@ -31,9 +31,8 @@ async def review_code(request: ReviewRequest):
         for file, content in repo_data.items():
             prompt += f'{file}\n{content}\n\n'
         logging.info("Reqest to OpenAI")
-        # review = await analyze_code(prompt, OPENAI_API_KEY)
-        review = await analyze_code(prompt)
-        print ({"review": review})
+        review = analyze_code(prompt)
+        return ({"review": review})
     except Exception as e:
         logging.error(f"Error during review: {e}")
         raise HTTPException(status_code=500, detail="Internal server error")
@@ -46,12 +45,11 @@ def analyze_code(code: str):
     }
     try:
         if httpx.Response.is_success:
-            chat = client_openai.chat.completions.create(messages=data["messages"], model=data['model'], stream=True)
-            for chunk in chat:
-                return chunk.choices[0].delta.content
+            chat = client_openai.chat.completions.create(messages=data["messages"], model=data['model'])
+            return chat.choices[0].message.content
+            # for chunk in chat:
+            #     # return chunk.choices[0].delta.content
         else:
             raise HTTPException(status_code=429, detail="Error response OpenAI")
-    except:
-        raise HTTPException(status_code=500, detail="Error analyzing code with OpenAI")
-
-
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=e)
