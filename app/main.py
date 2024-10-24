@@ -49,7 +49,7 @@ async def review_code(request: ReviewRequest): #(description="This is a coding a
 def analyze_code(code: str, level: str):
     client_openai = openai.Client(api_key=OPENAI_API_KEY)
     data = {
-        "model": "gpt-4o-mini",
+        "model": "gpt-4-turbo",
         "messages": [{"role": "user", "content": f"Review this code as a {level} candidate and provide short feedback on what the positives are and what could be improved: {code}.\n Start your answer like this: As for a programmer level {level}"}],
     }
     try:
