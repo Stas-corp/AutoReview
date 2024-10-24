@@ -1,12 +1,17 @@
 from .github_content import GithubManager
+
 import os
 import logging
+from pydantic import BaseModel, HttpUrl
+from dotenv import load_dotenv
 
 import openai
 import httpx
-from fastapi import FastAPI, HTTPException
-from dotenv import load_dotenv
-from pydantic import BaseModel, HttpUrl
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
+
 
 load_dotenv()
 logging.basicConfig(level=logging.INFO)
@@ -15,14 +20,19 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 GITHUB_API_TOKEN = os.getenv("GITHUB_API_TOKEN")
 
 app = FastAPI()
+templates = Jinja2Templates(directory="app/templates")
 
 class ReviewRequest(BaseModel):
     description: str
     repo_url: HttpUrl
     level: str
 
-@app.get("/")
-async def review_code(request = ReviewRequest(description="This is a coding assignment", repo_url="https://github.com/Stas-corp/Test_USD", level ="Junior")):
+@app.get("/", response_class=HTMLResponse)
+async def get_form(request: Request):
+    return templates.TemplateResponse("form.html", {"request": request})
+
+@app.post("/review")
+async def review_code(request: ReviewRequest): #(description="This is a coding assignment", repo_url="https://github.com/Stas-corp/Test_USD", level ="Junior")
     try:
         logging.info("Review process started")
         repo_data = await GithubManager.main(request.repo_url)

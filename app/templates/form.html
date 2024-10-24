@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Review Request</title>
+</head>
+<body>
+    <h1>Code Review Request Form</h1>
+    <form action="/submit-review" method="post">
+        <label for="assignment_description">Assignment Description:</label>
+        <input type="text" id="assignment_description" name="assignment_description" required><br><br>
+
+        <label for="github_repo_url">GitHub Repository URL:</label>
+        <input type="url" id="github_repo_url" name="github_repo_url" required><br><br>
+
+        <label for="candidate_level">Candidate Level:</label>
+        <select id="candidate_level" name="candidate_level">
+            <option value="Junior">Junior</option>
+            <option value="Middle">Middle</option>
+            <option value="Senior">Senior</option>
+        </select><br><br>
+
+        <input type="submit" value="Submit Review">
+    </form>
+</body>
+</html>
