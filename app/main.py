@@ -1,3 +1,4 @@
+from .github_content import fetch_repo_contents
 import os
 import logging
 
@@ -31,16 +32,6 @@ async def review_code(request: ReviewRequest):
     except Exception as e:
         logging.error(f"Error during review: {e}")
         raise HTTPException(status_code=500, detail="Internal server error")
-
-async def fetch_repo_contents(repo_url: str):
-    headers = {"Authorization": f"Bearer {GITHUB_API_TOKEN}",
-               "Accept": "application/vnd.github.raw+json"}
-    api_url = f"https://api.github.com/repos/{repo_url}/contents"
-    async with httpx.AsyncClient() as client:
-        response = await client.get(api_url, headers=headers)
-        if response.status_code != 200:
-            raise HTTPException(status_code=500, detail="Error fetching repository data from GitHub")
-        return response.json()
     
 def analyze_code(code: str):
     data = {
