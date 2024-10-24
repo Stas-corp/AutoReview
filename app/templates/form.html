@@ -3,25 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Code Review Request</title>
+    <title>Code Review</title>
+    <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
-    <h1>Code Review Request Form</h1>
-    <form action="/submit-review" method="post">
-        <label for="assignment_description">Assignment Description:</label>
+    <h1>Code Review</h1>
+    <form id="review-form">
+        <label for="assignment_description">Assignment Description:</label><br>
         <input type="text" id="assignment_description" name="assignment_description" required><br><br>
 
-        <label for="github_repo_url">GitHub Repository URL:</label>
+        <label for="github_repo_url">GitHub Repository URL:</label><br>
         <input type="url" id="github_repo_url" name="github_repo_url" required><br><br>
 
-        <label for="candidate_level">Candidate Level:</label>
+        <label for="candidate_level">Candidate Level:</label><br>
         <select id="candidate_level" name="candidate_level">
             <option value="Junior">Junior</option>
             <option value="Middle">Middle</option>
             <option value="Senior">Senior</option>
         </select><br><br>
 
-        <input type="submit" value="Submit Review">
+        <input type="submit" id="submit-btn" value="Submit Review">
     </form>
+
+    <div id="loading" class="loader" style="display: none;"></div>
+
+    <div class="result-container">
+        <h2>Files in Repository:</h2>
+        <div id="files-review">Files will be displayed here...</div>
+        <h2>Review Result:</h2>
+        <div id="review-result">The review will be displayed here...</div>
+    </div>
+
+    <script src="/static/script.js"></script>
 </body>
 </html>
